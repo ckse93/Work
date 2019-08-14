@@ -67,7 +67,7 @@ public class Main {
         List<String> masterStrList = new ArrayList<>(Arrays.asList(str.split("@")));
         masterStrList.add("ENDLALALA"); // buffer
         List<String> firstStrList = new ArrayList<>();
-        String firstFrameDesignation = masterStrList.get(1).replaceAll("Frame Designation", "").replaceAll(" ","");
+        String FrameDesignations = masterStrList.get(1).replaceAll("Frame Designation", "").replaceAll(" ","");
         // werid format will always have 2 charts in one page.
         int flag = 0;
         int strListFlag = 0;  // when set to zero, add onto the firstStrFlag, when set to one, add onto secondStrFlag
@@ -78,12 +78,13 @@ public class Main {
                 }
             }
             if (masterStrList.get(i).contains("Frame Designation") || masterStrList.get(i).contains("ENDLALALA") ){
+                FrameDesignations = FrameDesignations + masterStrList.get(i);
                 flag = 0;
             }
             if (flag == 1) {
                 firstStrList.add(masterStrList.get(i).replace("\\n", "") + "\n");
             }
-            //System.out.println("masterstrList at " + i + " : " +masterStrList.get(i));
+            System.out.println("masterstrList at " + i + " : " +masterStrList.get(i));
         }
 
         System.out.println("----------------------------------------------------------------------------");
@@ -95,7 +96,7 @@ public class Main {
         String st = firstStrList.toString();
         List<String> secondStrList = new ArrayList<>(Arrays.asList(st.replaceAll("\n", "").split("Ds")));
         secondStrList.remove(0);  // first element is a dummy data
-        System.out.println("First Frame Design : "+ firstFrameDesignation);
+        System.out.println("First Frame Design : "+ FrameDesignations);
         for (int i = 0 ; i < secondStrList.size() ; i++) {
             System.out.println("second i : " + i + " = " + secondStrList.get(i));
         }
