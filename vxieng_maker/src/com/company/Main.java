@@ -83,8 +83,7 @@ public class Main {
             if (flag == 1) {
                 firstStrList.add(masterStrList.get(i).replace("\\n", "") + "\n");
             }
-
-           // System.out.println("masterstrList at " + i + " : " +masterStrList.get(i));
+           //System.out.println("masterstrList at " + i + " : " +masterStrList.get(i));
         }
         FrameDesignations = FrameDesignations.replaceAll(" @ ", " ").replaceAll("Frame Designation", "").replaceAll("ENDLALALA", "");
 
@@ -94,39 +93,126 @@ public class Main {
         System.out.println("----------------------------------------------------------------------------");
 /*
         for (int i = 0 ; i < firstStrList.size() ; i ++) {
-            System.out.print(i + " : " + firstStrList.get(i));
+            System.out.print("FirstStrList at " + i + " : " + firstStrList.get(i));
         }
 */
         String st = firstStrList.toString();
+       // System.out.println(firstStrList.toString());
+        if (st.charAt(1) != 'D' && st.charAt(2) != 's') {
+            st = "Ds-NA" + st;
+        }  // some fuckery has no Dataset designation. this will prevent system from breaking. fucking ass.
+
         List<String> secondStrList = new ArrayList<>(Arrays.asList(st.replaceAll("\n", "").split("Ds")));
         secondStrList.remove(0);  // first element is a dummy data
 
 
-        Receiver temp1 = new Receiver(FrameDesigList.get(0));
+        Receiver temp1 = new Receiver(FrameDesigList.get(0));  // making receiver varaiable with receiver names in it
         Receiver temp2 = new Receiver(FrameDesigList.get(2));
 
+        //System.out.println("st is" + st);
+        //System.out.println("SecondStrList as string : " + secondStrList.toString());
+        for (int i = 0 ; i< secondStrList.size()-1;i++) {
+            System.out.println("SecondStrList at i : " + i + secondStrList.get(i));
+        }
 
-        /*
-        StringBuilder sb1 =
-
-        String tempDesignation1 = secondStrList.get(0).substring(0, secondStrList.get(0).indexOf(" "));
-        String tempDesignation2 = secondStrList.get(1).substring(0, secondStrList.get(1).indexOf(" "));
-
-        temp1.addRow("Ds"+tempDesignation1,"ACPARAM", "STARTBIT", "TYPE","EEC","MIN","MAX","UNITS");
-        temp2.addRow("Ds"+tempDesignation2,"ACPARAM", "STARTBIT", "TYPE","EEC","MIN","MAX","UNITS");
-        System.out.println( "Receiver's stored Frame designation : " + temp1.getFrameDesignation() + " and " + temp2.getFrameDesignation());
-        System.out.println(temp1.rowList.get(0)+ "   |   " + temp2.rowList.get(0));
-*/
         secondStrList.set(secondStrList.size()-1, secondStrList.get(secondStrList.size()-1).substring(0, (secondStrList.get(secondStrList.size()-1)).lastIndexOf(" ")));
+       // removing weird "","","", stuff so it looks clean.
+
         int flag2 = 0;
         for (int i = 0 ; i < secondStrList.size() ; i++) {
             String tester = secondStrList.get(i).substring(secondStrList.get(i).lastIndexOf(" ")+1);
-            if (tester.equals(FrameDesigList.get(2))) {  // if this is same as the second Receiver's frame designation
+            List<String> breakdownList = new ArrayList<>(Arrays.asList(secondStrList.get(i).split(",")));
+            breakdownList.set(0,breakdownList.get(0).replaceAll(" Left ", "_L_").replaceAll(" Right ", "_R_"));
+            if (breakdownList.get(breakdownList.size()-1).equals("") || breakdownList.get(breakdownList.size()-1).equals(" ") ) {
+                breakdownList.remove(breakdownList.size()-1);  // last element is a dummy. remove it to make it look better
+            }
 
+            System.out.println("i : " + i);
+
+
+            if (flag2 == 0) {
+                System.out.println("Put it in First");
+                String strr ="";
+
+                for (int j = 0 ; j<breakdownList.size(); j++) {
+                    strr += (breakdownList.get(j));
+                }
+                System.out.println(strr);
+                String datasetDesig = "Ds" + strr.substring(0, strr.indexOf(" "));
+                strr = strr.substring(datasetDesig.length()-1, strr.length()-1);
+                String ACParam;
+                ArrayList<String> ParamStuff = new ArrayList<>(Arrays.asList(strr.split(" ")));
+
+                for (int l = 0 ; l < ParamStuff.size()-1 ; l++){
+                    System.out.print( " |i : " + l + " = " + ParamStuff.get(l));
+                }
+                System.out.println("");
+                ACParam = ParamStuff.get(0);
+                int k = 1;
+                while (!ParamStuff.get(k).matches("[0-9]+") && (!ParamStuff.get(k).equals("37")||!ParamStuff.get(k).equals("36")||!ParamStuff.get(k).equals("35")||!ParamStuff.get(k).equals("34")||!ParamStuff.get(k).equals("33"))) {
+                    ACParam += ParamStuff.get(k);
+                    k++;
+                }
+                k++;
+                String startBitPos = ParamStuff.get(k++);
+                String DataType = ParamStuff.get(k+2); k+=3;
+                String EEC = ParamStuff.get(k++);
+                String MN = ParamStuff.get(k++);
+                String MX = ParamStuff.get(k++);
+                k+=3;
+                String Unit = ParamStuff.get(k);
+                if (!ParamStuff.get(k+1).replaceAll(" ","").matches("[0-9]+")){ // if next to unit is not numerica, then it must be that goddamn cut off unit.
+                    Unit += ParamStuff.get(k+1);
+                }
+                System.out.println("Parsing result : " + datasetDesig + " | AC param : " + ACParam + " | stat bit:" + startBitPos + " | datatype : " + DataType + " | EEC : " + EEC +
+                        " | Min : " + MN + " | Max : " + MX + " | Units : " + Unit);
+
+            }
+            else if (flag2 == 1){
+                System.out.println("Put it in Second");
+                String strr ="";
+
+                for (int j = 0 ; j<breakdownList.size(); j++) {
+                    strr += (breakdownList.get(j));
+                }
+                System.out.println(strr);
+                String datasetDesig = "Ds" + strr.substring(0, strr.indexOf(" "));
+                strr = strr.substring(datasetDesig.length()-1, strr.length()-1);
+                String ACParam;
+                ArrayList<String> ParamStuff = new ArrayList<>(Arrays.asList(strr.split(" ")));
+
+                for (int l = 0 ; l < ParamStuff.size()-1 ; l++){
+                    System.out.print( " |i : " + l + " = " + ParamStuff.get(l));
+                }
+                System.out.println("");
+                ACParam = ParamStuff.get(0);
+                int k = 1;
+                while (!ParamStuff.get(k).matches("[0-9]+") && (!ParamStuff.get(k).equals("37")||!ParamStuff.get(k).equals("36")||!ParamStuff.get(k).equals("35")||!ParamStuff.get(k).equals("34")||!ParamStuff.get(k).equals("33"))) {
+                    ACParam += ParamStuff.get(k);
+                    k++;
+                }
+                k++;
+                String startBitPos = ParamStuff.get(k++);
+                String DataType = ParamStuff.get(k+2); k+=3;
+                String EEC = ParamStuff.get(k++);
+                String MN = ParamStuff.get(k++);
+                String MX = ParamStuff.get(k++);
+                k+=3;
+                String Unit = ParamStuff.get(k);
+                if (!ParamStuff.get(k+1).replaceAll(" ","").matches("[0-9]+")){ // if next to unit is not numerica, then it must be that goddamn cut off unit.
+                    Unit += ParamStuff.get(k+1);
+                }
+                System.out.println("Parsing result : " + datasetDesig + " | AC param : " + ACParam + " | stat bit:" + startBitPos + " | datatype : " + DataType + " | EEC : " + EEC +
+                        " | Min : " + MN + " | Max : " + MX + " | Units : " + Unit);
             }
 
 
-            System.out.println("second i : " + i + " = " + secondStrList.get(i));
+            for (int j = 0 ; j < breakdownList.size();j++){
+                if (breakdownList.get(j).contains(FrameDesigList.get(2))) {
+                    flag2 = 1;
+                }
+                //System.out.println("   j : "+ j + breakdownList.get(j));
+            }
 
         }
         System.out.println("");
