@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 import org.json.*;
 
+import javax.sound.sampled.ReverbType;
 import javax.swing.*;
 
 
@@ -99,16 +100,36 @@ public class Main {
         String st = firstStrList.toString();
         List<String> secondStrList = new ArrayList<>(Arrays.asList(st.replaceAll("\n", "").split("Ds")));
         secondStrList.remove(0);  // first element is a dummy data
-        System.out.println("first frame designation"+FrameDesigList.get(0));
-        System.out.println("second frame designation"+ FrameDesigList.get(2));
 
 
+        Receiver temp1 = new Receiver(FrameDesigList.get(0));
+        Receiver temp2 = new Receiver(FrameDesigList.get(2));
+
+
+        /*
+        StringBuilder sb1 =
+
+        String tempDesignation1 = secondStrList.get(0).substring(0, secondStrList.get(0).indexOf(" "));
+        String tempDesignation2 = secondStrList.get(1).substring(0, secondStrList.get(1).indexOf(" "));
+
+        temp1.addRow("Ds"+tempDesignation1,"ACPARAM", "STARTBIT", "TYPE","EEC","MIN","MAX","UNITS");
+        temp2.addRow("Ds"+tempDesignation2,"ACPARAM", "STARTBIT", "TYPE","EEC","MIN","MAX","UNITS");
+        System.out.println( "Receiver's stored Frame designation : " + temp1.getFrameDesignation() + " and " + temp2.getFrameDesignation());
+        System.out.println(temp1.rowList.get(0)+ "   |   " + temp2.rowList.get(0));
+*/
+        secondStrList.set(secondStrList.size()-1, secondStrList.get(secondStrList.size()-1).substring(0, (secondStrList.get(secondStrList.size()-1)).lastIndexOf(" ")));
+        int flag2 = 0;
         for (int i = 0 ; i < secondStrList.size() ; i++) {
+            String tester = secondStrList.get(i).substring(secondStrList.get(i).lastIndexOf(" ")+1);
+            if (tester.equals(FrameDesigList.get(2))) {  // if this is same as the second Receiver's frame designation
+
+            }
+
+
             System.out.println("second i : " + i + " = " + secondStrList.get(i));
+
         }
         System.out.println("");
-
-
 
 
     }

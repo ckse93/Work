@@ -2,60 +2,43 @@ package com.company;
 
 import org.json.*;
 
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.List;
+
 public class Receiver {
-    private String DatasetDesig = "";
-    private String AC_Param = "";
-    private String StartBitPos;
-    private String DataType;
-    private String EEC;
-    private String RangeMin;
-    private String RangeMax;
-    private String Units;
+    private String frameDesignation;
+    public List<Dictionary> rowList = new ArrayList<>();
 
-
-    // setters
-    public void setDatasetDesig (String str) {
-        DatasetDesig = str.replaceAll("\n", "").replaceAll(" ", "");
-    }
-    public void setAC_Param(String str) {
-        AC_Param = str.replaceAll("\n", "").replaceAll(" ", "");
+    public Receiver(String str){  // initializer with a string input.
+        frameDesignation = str;
     }
 
-    // getters
-    public String getDatasetDesig() { return DatasetDesig;}
-    public String getAC_Param() { return AC_Param;}
-    public String getUnits() { return Units;}
-    public String getEEC() { return EEC; }
-    public String getRangeMax() { return RangeMax; }
-    public String getRangeMin() { return RangeMin; }
-    public String getDataType() { return DataType; }
-    public String getStartBitPos() { return StartBitPos; }
-
-
-    public void setRangeMin(String rangeMin) {
-        RangeMin = rangeMin;
+    public void addRow(String datasetDesig, String AC_Param, String startBit, String dataType, String EEC, String MIN,
+                       String MAX, String unit){
+        Dictionary temp = new Hashtable();
+        temp.put("Dataset Designation", datasetDesig);
+        temp.put("AC Parameter", AC_Param);
+        temp.put("Start Bit Position", startBit);
+        temp.put("Data Type", dataType);
+        temp.put("EEC Mnemonic", EEC);
+        temp.put("Functional Rance Min", MIN);
+        temp.put("Functional Range Max", MAX);
+        temp.put("Units",unit);
+        rowList.add(temp);
+        System.out.println("addRow Done");
     }
 
-    public void setRangeMax(String rangeMax) {
-        RangeMax = rangeMax;
+    public List<Dictionary> getRowList() {
+        return rowList;
     }
 
-
-    public void setStartBitPos(String startBitPos) {
-        StartBitPos = startBitPos;
+    public Dictionary getDictionaryAt(int i) {
+        return rowList.get(i);
     }
 
-
-    public void setDataType(String dataType) {
-        DataType = dataType;
-    }
-
-
-    public void setEEC(String EEC) {
-        this.EEC = EEC;
-    }
-
-    public void setUnits(String units) {
-        Units = units;
+    public String getFrameDesignation(){
+        return frameDesignation;
     }
 }
