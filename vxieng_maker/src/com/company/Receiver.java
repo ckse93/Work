@@ -15,10 +15,10 @@ public class Receiver {
 
     // setters
     public void setDatasetDesig (String str) {
-
+        DatasetDesig = str.replaceAll("\n", "").replaceAll(" ", "");
     }
     public void setAC_Param(String str) {
-
+        AC_Param = str.replaceAll("\n", "").replaceAll(" ", "");
     }
 
     // getters
