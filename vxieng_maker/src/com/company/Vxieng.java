@@ -21,16 +21,19 @@ public class Vxieng {
         }
         for (int i = 0 ; i < ReceiverList.size() ; i++) {
             Receiver temp = ReceiverList.get(i);
-            System.out.println("Frame Designation : " + temp.getFrameDesignation() + "at : " + i);
+            System.out.println("Frame Designation : " + temp.getFrameDesignation() + ", at : " + i);
             for (int j = 0 ; j < temp.rowList.size() ; j++) {
-                System.out.print("    Dataset Designation : " + temp.rowList.get(j).get("Dataset Designation") + " | ");
-                System.out.print("AC Parameter : " + temp.rowList.get(j).get("AC Parameter") + " | ");
-                System.out.print("Start Bit Position : " + temp.rowList.get(j).get("Start Bit Position") + " | ");
-                System.out.print("Data Type : " + temp.rowList.get(j).get("Data Type") + " | ");
-                System.out.print("EEC Mnemonic: " + temp.rowList.get(j).get("EEC Mnemonic") + " | ");
-                System.out.print("Range Min : " + temp.rowList.get(j).get("Range Min") + " | ");
-                System.out.print("Range Max : " + temp.rowList.get(j).get("Range Max") + " | ");
-                System.out.print("Units : " + temp.rowList.get(j).get("Units") + "\n");
+                if (temp.rowList.get(j).get("AC Parameter").toString().length() > 2){
+                    System.out.print("    Dataset Designation : " + temp.rowList.get(j).get("Dataset Designation").toString() + " | ");
+                    System.out.print("AC Parameter : " + temp.rowList.get(j).get("AC Parameter") + " | ");
+                    System.out.print("Start Bit Position : " + temp.rowList.get(j).get("Start Bit Position") + " | ");
+                    System.out.print("Data Type : " + temp.rowList.get(j).get("Data Type") + " | ");
+                    System.out.print("EEC Mnemonic: " + temp.rowList.get(j).get("EEC Mnemonic") + " | ");
+                    System.out.print("Range Min : " + temp.rowList.get(j).get("Range Min") + " | ");
+                    System.out.print("Range Max : " + temp.rowList.get(j).get("Range Max") + " | ");
+                    System.out.print("Units : " + temp.rowList.get(j).get("Units") + "\n");
+                    //System.out.println("Dataset desig is : " + temp.rowList.get(j).get("Dataset Designation").toString().toCharArray().toString());
+                }
             }
         }
     }
@@ -40,7 +43,7 @@ public class Vxieng {
             if (isReceiverEqual(ReceiverList.get(i-1), ReceiverList.get(i))){
                 ReceiverList.remove(i);
                 i--;
-                System.out.println("removed");
+              //  System.out.println("removed");
             }
         }
     }

@@ -33,7 +33,7 @@ public class Main {
                 FormatBlock((JSONObject) jsonArray.get(i), vxieng);
             }
             vxieng.DisplayAll();
-            System.out.println(vxieng.ReceiverList.size());
+            //System.out.println(vxieng.ReceiverList.size());
         } catch (JSONException error) {
             System.out.println("JSON Parsing error in Main() : " + error.toString());
         }
@@ -52,18 +52,43 @@ public class Main {
         }
 
 
+        String frameDesignation = "";
+        Receiver temp = new Receiver();
         for (int i = 0 ; i < jsonArray.length() ; i++) {
             JSONArray lala = jsonArray.getJSONArray(i);  // lala is an array.
-            System.out.print("lala[" + i + "] = " + lala.toString());
+
+
+            System.out.println("lala[" + i + "] = " + lala.toString());
+            ArrayList<String> strList = new ArrayList<>(Arrays.asList(lala.toString().split(",")));
+            for (int j = 0 ; j < strList.size() ; j++){
+                System.out.println("strlist.get(" +j +") : " + strList.get(j));
+            }
             if (isJSONArrayEmpty(lala) == true) {
                 System.out.println("  == Empty!");
             }
             else {
+                if (strList.get(1).contains("Frame Designation") && i ==0 ) {
+                    frameDesignation = strList.get(3);
+                }
+                else if (strList.get(3).length() >2 && !strList.get(3).contains("Partition ID")) {  // when there is actually a thing to parse. for some reason, "" has length of 2...?
+                    String dataSetDesig = strList.get(1);
+                    String ACParam = strList.get(2);
+                    String startBitPos = strList.get(4);
+                    String dataType = strList.get(7);
+                    String EEC = strList.get(8);
+                    String min = strList.get(9);
+                    String max = strList.get(10);
+                    String unit = strList.get(14);
+                    temp.addRow(dataSetDesig,ACParam,startBitPos,dataType,EEC,min,max,unit);
+                    System.out.println("row list : " + temp.getRowList().toString());
+                }
                 System.out.println("");
             }
         }
         System.out.println("");
-        
+        temp.setFrameDesignation(frameDesignation);
+        vxieng.ReceiverList.add(temp);
+        System.out.println("****************************One Iteration of Format Block Done************************************");
         return;
     }
 
