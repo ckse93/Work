@@ -29,12 +29,17 @@ public class Main {
             vxieng = new Vxieng();
 
             for (int i = 0; i < jsonArray.length() ; i++ ) {
+                System.out.println("Working on " + i + "th jsonArray===================================================================");
                 FormatBlock((JSONObject) jsonArray.get(i), vxieng);
             }
+            vxieng.DisplayAll();
+            System.out.println(vxieng.ReceiverList.size());
         } catch (JSONException error) {
             System.out.println("JSON Parsing error in Main() : " + error.toString());
         }
         /* ============================================================ */
+
+        
     }
 
     private static void FormatBlock(JSONObject json, Vxieng vxieng) {
@@ -58,7 +63,7 @@ public class Main {
             }
         }
         System.out.println("");
-
+        
         return;
     }
 
@@ -153,6 +158,10 @@ public class Main {
                     ACParam += ParamStuff.get(k);
                     k++;
                 }
+                if (ParamStuff.get(k).length() != 2) {
+                    ACParam += ParamStuff.get(k);
+                    k++;
+                }
                 k++;
                 String startBitPos = ParamStuff.get(k++);
                 String DataType = ParamStuff.get(k+2); k+=3;
@@ -166,6 +175,9 @@ public class Main {
                 }
                 System.out.println("Parsing result : " + datasetDesig + " | AC param : " + ACParam + " | stat bit:" + startBitPos + " | datatype : " + DataType + " | EEC : " + EEC +
                         " | Min : " + MN + " | Max : " + MX + " | Units : " + Unit);
+
+                temp1.addRow(datasetDesig,ACParam,startBitPos,DataType,EEC,MN,MX,Unit);
+                vxieng.ReceiverList.add(temp1);
 
             }
             else if (flag2 == 1){
@@ -191,6 +203,11 @@ public class Main {
                     ACParam += ParamStuff.get(k);
                     k++;
                 }
+                if (ParamStuff.get(k).length() != 2) {
+                    ACParam += ParamStuff.get(k);
+                    k++;
+                }
+
                 k++;
                 String startBitPos = ParamStuff.get(k++);
                 String DataType = ParamStuff.get(k+2); k+=3;
@@ -204,6 +221,8 @@ public class Main {
                 }
                 System.out.println("Parsing result : " + datasetDesig + " | AC param : " + ACParam + " | stat bit:" + startBitPos + " | datatype : " + DataType + " | EEC : " + EEC +
                         " | Min : " + MN + " | Max : " + MX + " | Units : " + Unit);
+                temp2.addRow(datasetDesig,ACParam,startBitPos,DataType,EEC,MN,MX,Unit);
+                vxieng.ReceiverList.add(temp2);
             }
 
 
@@ -213,7 +232,6 @@ public class Main {
                 }
                 //System.out.println("   j : "+ j + breakdownList.get(j));
             }
-
         }
         System.out.println("");
 

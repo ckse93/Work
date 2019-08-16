@@ -23,8 +23,8 @@ public class Receiver {
         temp.put("Start Bit Position", startBit);
         temp.put("Data Type", dataType);
         temp.put("EEC Mnemonic", EEC);
-        temp.put("Functional Rance Min", MIN);
-        temp.put("Functional Range Max", MAX);
+        temp.put("Range Min", MIN);
+        temp.put("Range Max", MAX);
         temp.put("Units",unit);
         rowList.add(temp);
         System.out.println("addRow Done");
