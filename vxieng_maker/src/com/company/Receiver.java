@@ -20,7 +20,7 @@ public class Receiver {
     public void addRow(String datasetDesig, String AC_Param, String startBit, String dataType, String EEC, String MIN,
                        String MAX, String unit){
         Dictionary temp = new Hashtable();
-        temp.put("Dataset Designation", datasetDesig.toString().replaceAll("\\\\n","").replaceAll(" ",""));
+        temp.put("Dataset Designation", datasetDesig.toString().replaceAll("\\\\n","").replaceAll(" ","").replaceAll("NA\\[","NA"));
         temp.put("AC Parameter", AC_Param.replaceAll("\\\\n","").replaceAll(" ",""));
         temp.put("Start Bit Position", startBit.replaceAll("\\\\n","").replaceAll(" ",""));
         temp.put("Data Type", dataType.replaceAll("\\\\n","").replaceAll(" ",""));

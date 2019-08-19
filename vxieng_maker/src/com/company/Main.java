@@ -32,7 +32,8 @@ public class Main {
                 System.out.println("Working on " + i + "th jsonArray===================================================================");
                 FormatBlock((JSONObject) jsonArray.get(i), vxieng);
             }
-            vxieng.DisplayAll();
+           // vxieng.DisplayAll();
+            vxieng.DisplayFormatted();
             //System.out.println(vxieng.ReceiverList.size());
         } catch (JSONException error) {
             System.out.println("JSON Parsing error in Main() : " + error.toString());
@@ -68,17 +69,17 @@ public class Main {
             }
             else {
                 if (strList.get(1).contains("Frame Designation") && i ==0 ) {
-                    frameDesignation = strList.get(3);
+                    frameDesignation = strList.get(3).replaceAll("\"","");
                 }
                 else if (strList.get(3).length() >2 && !strList.get(3).contains("Partition ID")) {  // when there is actually a thing to parse. for some reason, "" has length of 2...?
-                    String dataSetDesig = strList.get(1);
-                    String ACParam = strList.get(2);
-                    String startBitPos = strList.get(4);
-                    String dataType = strList.get(7);
-                    String EEC = strList.get(8);
-                    String min = strList.get(9);
-                    String max = strList.get(10);
-                    String unit = strList.get(14);
+                    String dataSetDesig = strList.get(1).replaceAll("\"","");
+                    String ACParam = strList.get(2).replaceAll("\"","").replaceAll("@","");
+                    String startBitPos = strList.get(4).replaceAll("\"","");
+                    String dataType = strList.get(7).replaceAll("\"","");
+                    String EEC = strList.get(8).replaceAll("\"","");
+                    String min = strList.get(9).replaceAll("\"","");
+                    String max = strList.get(10).replaceAll("\"","");
+                    String unit = strList.get(14).replaceAll("\"","");
                     temp.addRow(dataSetDesig,ACParam,startBitPos,dataType,EEC,min,max,unit);
                     System.out.println("row list : " + temp.getRowList().toString());
                 }
