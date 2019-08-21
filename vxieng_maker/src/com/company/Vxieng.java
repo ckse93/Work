@@ -105,6 +105,62 @@ public class Vxieng {
     }
 
 
+    public void DisplayFormatted_ver2() {  // basically like DisplayAll, but this wil return the final vxieng string.
+        MergeDuplicates();   // 1. merge the duplicates
+        if (ReceiverList.isEmpty()){
+            System.out.println("ReceiverList is empty");
+        }
+        // 2. merge 2 receivers that have the same frame designations.
+
+        for (int i = 0; i < ReceiverList.size()-1; i++){
+            if (ReceiverList.get(i).getFrameDesignation().equals(ReceiverList.get(i+1).getFrameDesignation())){
+                MergeReceivers(ReceiverList.get(i), ReceiverList.get(i+1));
+                ReceiverList.remove(i+1);
+            }
+        }
+
+        for (int i = 0 ; i < ReceiverList.size() ; i++) {  // each iteration is for one Reveiver entity
+            Receiver temp = ReceiverList.get(i);
+            System.out.print("\n$RECEIVER "+ temp.getFrameDesignation() + " PORT=UNDECIDED ACTIVE=UNDECIDED\n");
+            int bitnum = 0;
+            int bitflag = 0;
+            temp.addRow("","","","","","","","");  // dummy tail
+            for (int j = 0 ; j < temp.rowList.size()-1 ; j++) {  // each iteration is for one row.
+                if (temp.rowList.get(j).get("Dataset Designation").toString().equals(temp.rowList.get(j+1).get("Dataset Designation").toString())){
+                    if (bitflag == 0) {
+                        System.out.println("$BITS");
+                        bitflag = 1;
+                    }
+                    System.out.print(temp.rowList.get(j).get("EEC Mnemonic").toString() + "_" + temp.rowList.get(j).get("Start Bit Position") + " BITNUM=" + bitnum++ + " 0VAL= 1VAL= LABEL=\n");
+                }
+                else {
+                    if (bitflag == 1) {
+                        System.out.println(temp.rowList.get(j).get("EEC Mnemonic").toString() + temp.rowList.get(j).get("Start Bit Position") + " BITNUM=" + bitnum++ + " 0VAL= 1VAL= LABEL=");
+                        System.out.println("$END-BITS");
+                        bitflag = 0;
+                    }
+                    System.out.print("$FDS "+ temp.rowList.get(j).get("Dataset Designation") + " STATUS=UNDECIDED\n");
+                    System.out.print(temp.rowList.get(j).get("AC Parameter") + " TYPE=" + temp.rowList.get(j).get("Data Type") +
+                            " SIZE=UNDECIDED ADDRESS=UNDECIDED ");
+
+                    if (!temp.rowList.get(j).get("Range Min").equals("")){
+                        System.out.print("SIGNALRANGE=\"" + temp.rowList.get(j).get("Range Min") + " " + temp.rowList.get(j).get("Range Max") + " " + temp.rowList.get(j).get("Units") + "\"\n");
+                    }else {
+                        System.out.print("\n");
+                    }
+                    bitnum = 0;
+                    System.out.print("$END-FDS\n");
+                }
+            }
+            if (bitflag == 1) {
+                System.out.println(temp.rowList.get(temp.rowList.size()-1).get("EEC Mnemonic").toString() + "_" + temp.rowList.get(temp.rowList.size()-1).get("Start Bit Position") + " BITNUM=" + bitnum++ + " 0VAL= 1VAL= LABEL=");
+                System.out.println("$END-BITS");
+            }
+            System.out.print("$END-RECEIVER\n*\n*");
+        }
+    }
+
+
 
     private void MergeDuplicates() {
         for (int i = 1 ; i < ReceiverList.size();i++){

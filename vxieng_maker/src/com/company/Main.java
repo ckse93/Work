@@ -52,6 +52,7 @@ public class Main {
             return;
         }
 
+// when one page has one table receiver data.
 
         String frameDesignation = "";
         Receiver temp = new Receiver();
